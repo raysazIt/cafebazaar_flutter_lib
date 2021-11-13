@@ -1,7 +1,7 @@
 name: cafebazaar_flutter_lib
 description: A new flutter plugin project.
 version: 0.0.1
-homepage:
+homepage: https://github.com/raysazIt/cafebazaar_flutter_lib
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
