@@ -17,7 +17,5 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('getPlatformVersion', () async {
-    expect(await CafebazaarFlutterLib.platformVersion, '42');
-  });
+  
 }

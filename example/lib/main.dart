@@ -5,45 +5,41 @@ import 'package:flutter/services.dart';
 import 'package:cafebazaar_flutter_lib/cafebazaar_flutter_lib.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
-  State<MyApp> createState() => _MyAppState();
+  _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  final _bazaar = CafebazaarFlutterLib.instance;
+
+
+
+
+  bool isLoggedIn = false;
+  int appVersionCode = -1;
 
   @override
   void initState() {
+    _bazaar.isLoggedIn().then((value) {
+      setState(() {
+        isLoggedIn = value;
+      });
+    });
+    _bazaar.getLatestVersion().then((value) {
+      setState(() {
+        appVersionCode = value;
+      });
+    });
     super.initState();
-    initPlatformState();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await CafebazaarFlutterLib.platformVersion ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -51,12 +47,73 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('CafeBazaar Plugin API Example'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text("آخرین نسخه برنامه : $appVersionCode"),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  if (!isLoggedIn)
+                    FlatButton(
+                      color: Colors.green,
+                      textColor: Colors.white,
+                      height: 50,
+                      onPressed: _login,
+                      child: Text("ورود به بازار"),
+                    ),
+                  if (!isLoggedIn)
+                    const SizedBox(
+                      height: 12,
+                    ),
+                  FlatButton(
+                    color: Colors.purple,
+                    textColor: Colors.white,
+                    height: 50,
+                    onPressed: _bazaar.openDetail,
+                    child: Text("مشاهده صفحه برنامه در بازار"),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  FlatButton(
+                    color: Colors.purple,
+                    textColor: Colors.white,
+                    height: 50,
+                    onPressed: _bazaar.openCommentForm,
+                    child: Text("ثبت نظر در بازار"),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  FlatButton(
+                    color: Colors.purple,
+                    textColor: Colors.white,
+                    height: 50,
+                    onPressed: () => _bazaar.openDeveloperPage("google-llc"),
+                    child: Text("مشاهده اپلیکیشن های توسعه دهنده"),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
+
+  Future _login() async {
+    await _bazaar.openLogin();
+    isLoggedIn = await _bazaar.isLoggedIn();
+    setState(() {});
+  }
+
+
 }
