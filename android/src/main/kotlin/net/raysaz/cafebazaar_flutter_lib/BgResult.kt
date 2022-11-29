@@ -10,7 +10,7 @@ class BgResult(private var result: Result) : Result {
     handler.post { result.success(results) }
   }
 
-  override fun error(errorCode: String?, errorMessage: String?, errorDetails: Any?) {
+  override fun error(errorCode: String, errorMessage: String?, errorDetails: Any?) {
     handler.post { result.error(errorCode, errorMessage, errorDetails) }
   }
 

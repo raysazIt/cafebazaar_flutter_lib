@@ -62,10 +62,8 @@ class _MyAppState extends State<MyApp> {
                     height: 12,
                   ),
                   if (!isLoggedIn)
-                    FlatButton(
-                      color: Colors.green,
-                      textColor: Colors.white,
-                      height: 50,
+                    ElevatedButton(
+
                       onPressed: _login,
                       child: Text("ورود به بازار"),
                     ),
@@ -73,30 +71,24 @@ class _MyAppState extends State<MyApp> {
                     const SizedBox(
                       height: 12,
                     ),
-                  FlatButton(
-                    color: Colors.purple,
-                    textColor: Colors.white,
-                    height: 50,
+                  ElevatedButton(
+
                     onPressed: _bazaar.openDetail,
                     child: Text("مشاهده صفحه برنامه در بازار"),
                   ),
                   const SizedBox(
                     height: 12,
                   ),
-                  FlatButton(
-                    color: Colors.purple,
-                    textColor: Colors.white,
-                    height: 50,
+                  ElevatedButton(
+
                     onPressed: _bazaar.openCommentForm,
                     child: Text("ثبت نظر در بازار"),
                   ),
                   const SizedBox(
                     height: 12,
                   ),
-                  FlatButton(
-                    color: Colors.purple,
-                    textColor: Colors.white,
-                    height: 50,
+                  ElevatedButton(
+
                     onPressed: () => _bazaar.openDeveloperPage("google-llc"),
                     child: Text("مشاهده اپلیکیشن های توسعه دهنده"),
                   ),
